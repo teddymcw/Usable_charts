@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script type="text/javascript">
+  function make_arc() {  
+    var svgWidth = 355;
+    var svgHeight = 355;
+    //to center the circle in the svg we need a string variable.
+    //now it is hard-coded as 177
+    var sW_half = svgWidth / 2;
+    var sH_half = svgHeight / 2;
+
+  	var svgContainer = d3.select("body").append("svg")
+			.attr({ width: svgWidth, height: svgHeight });
+
+	//var vis = d3.select("#svg_donut");
+	var arc = d3.svg.arc()
+	.innerRadius(50)
+	.outerRadius(60)
+	.startAngle(12)
+	.endAngle(2.0 * Math.PI); 
+	//full rotation is from  from 0 to 2 π
+
+	svgContainer.append("path")
+	.attr("d", arc)
+	.attr("transform", "translate(177, 177)"); 
+	}
+ window.onload = make_arc;
+
+  </script>
+  <style>
+     
+     svg {
+      	border-style: solid;
+      	border-color: blue;
+      }
+  </style>
+  <title>First Arc</title>
+</head>
+
+<body>
+	<h1>First Arc</h1>
+
+	
+
+</body>
+</html>
+
