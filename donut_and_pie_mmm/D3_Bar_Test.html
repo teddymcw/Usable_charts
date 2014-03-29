@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript">
+function make_bar() {
+
+  var w = { 'total_CP_SIZE_WRITE_0_100': 2671449,
+ 'total_CP_SIZE_WRITE_100K_1M': 5632,
+ 'total_CP_SIZE_WRITE_100M_1G': 0,
+ 'total_CP_SIZE_WRITE_100_1K': 1158,
+ 'total_CP_SIZE_WRITE_10K_100K': 0,
+ 'total_CP_SIZE_WRITE_10M_100M': 0,
+ 'total_CP_SIZE_WRITE_1G_PLUS': 0,
+ 'total_CP_SIZE_WRITE_1K_10K': 24499,
+ 'total_CP_SIZE_WRITE_1M_4M': 0,
+ 'total_CP_SIZE_WRITE_4M_10M': 0};
+  
+  ez_write_labels = []
+  $.each(w, function(key, value) { ez_write_labels.push(key); });
+  
+  ez_write_values = []
+  $.each(w, function(key, value) { ez_write_values.push(value); });
+
+  //meh, fuck the method of creating a new array including labels and values,
+  //they are now two lists. xx -> easy_array_w = {"label" : "", "count" : 0};
+
+  //element parameters
+
+
+  //var data = [ 10, 20, 15, 50, 70, 25 ]
+
+  var xscale = d3.scale.ordinal()
+  .domain(d3.range(ez_write_values.length))
+  .rangeBands([d3.min(ez_write_values), d3.max(ez_write_values)], 0.5)
+
+  var yscale = d3.scale.linear()
+  .domain([0, 100])
+  .range([d3.max(ez_write_values), d3.min(ez_write_values)])
+
+  var svg = d3.select("body").append("svg");
+
+  var rects = svg.selectAll("rect")
+  .data(ez_write_values);
+
+  rects.enter()
+  .append("rect")
+  .attr({
+    width: xscale.rangeBand() / 2
+    , height: function(d) { return 200 - yscale(d) }
+    , x: function(d,i) { return xscale(i) }
+    , y: function(d,i) { return yscale(d) }
+  })
+  .on("click", function(d,i) {
+    console.log(d);
+    rects.style("fill", "black")
+    d3.select(this).style("fill", "red");
+  })
+
+  update = function(ez_write_values) {
+    var rects = svg.selectAll("rect")
+    .data(easy_array_w)
+    .attr({
+      width: xscale.rangeBand()/2
+      , height: function(d) { return 200 - yscale(d) }
+      , x: function(d,i) { return xscale(i) }
+      , y: function(d,i) { return yscale(d) }
+    })
+    
+  }
+
+  var drag = d3.behavior.drag()
+  .on("drag", function(d,i) {
+    var dis = d3.select(this)
+    dis.attr("x", +dis.attr("x") + d3.event.dx)
+  })
+  .on("dragend", function(d,i) {
+    var dis = d3.select(this);
+    var x = +dis.attr("x");
+    var newIndex = invert(xscale, x)
+    console.log(newIndex)
+    var data = rects.data()
+    console.log(data)
+    if(newIndex > i) {
+      data.splice(newIndex, 0, d)
+      data.splice(i, 1)
+    } else {
+      data.splice(i, 1)
+      data.splice(newIndex, 0, d)
+    }
+    update(data);
+    
+  })
+  drag.apply(rects)
+
+  function invert(scale, x) {
+    var leftEdges = scale.range();
+    var width = scale.rangeBand();
+    var j;
+    for(j=0; x > (leftEdges[j] + width/2); j++) {}
+    return j;
+  }
+}
+ window.onload = make_bar;
+
+  </script>
+  <style>
+     
+     svg {
+        border-style: solid;
+        border-color: blue;
+      }
+  </style>
+  <title>Bar Test</title>
+</head>
+
+<body>
+  <h1>Bar Test</h1>
+
+  
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!-- NOTE THAT DONUT AND PIE CHARTS, MMM DONUTS, ARE THE SAME
+THING EXSCEPT FOR INNER RADIUS BEING SAID TO 0 FOR GUESS WHICH
+ONE. MMM PIE. -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title> Donut and Pie Ex </title>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script type="text/javascript">
+  var ok = {'_id': 'dliu_gtc_id7308332_3-13-70027-147026348612258555_1.darshan.gz',
+ 'agg_perf_by_cumul': 2836.215891,
+ 'agg_perf_by_open': 2300.994463,
+ 'agg_perf_by_open_lastio': 2863.85905,
+ 'agg_perf_by_slowest': 2812.332217,
+ 'end_time': 1394739701,
+ 'exe': '.\\\\/gtc',
+ 'host': 'hopper',
+ 'jobid': 7308332,
+ 'nprocs': 256,
+ 'start_time': 1394738827,
+ 'total_CP_BYTES_READ': 1134514176,
+ 'total_CP_BYTES_WRITTEN': 2300851574,
+ 'total_CP_F_POSIX_META_TIME': 53.537948,
+ 'total_CP_F_POSIX_READ_TIME': 4.820668,
+ 'total_CP_F_POSIX_WRITE_TIME': 4.967635,
+ 'total_CP_SIZE_READ_0_100': 1674240,
+ 'total_CP_SIZE_READ_100K_1M': 2816,
+ 'total_CP_SIZE_READ_100M_1G': 0,
+ 'total_CP_SIZE_READ_100_1K': 3584,
+ 'total_CP_SIZE_READ_10K_100K': 0,
+ 'total_CP_SIZE_READ_10M_100M': 0,
+ 'total_CP_SIZE_READ_1G_PLUS': 0,
+ 'total_CP_SIZE_READ_1K_10K': 0,
+ 'total_CP_SIZE_READ_1M_4M': 0,
+ 'total_CP_SIZE_READ_4M_10M': 0,
+ 'total_CP_SIZE_WRITE_0_100': 2671449,
+ 'total_CP_SIZE_WRITE_100K_1M': 5632,
+ 'total_CP_SIZE_WRITE_100M_1G': 0,
+ 'total_CP_SIZE_WRITE_100_1K': 1158,
+ 'total_CP_SIZE_WRITE_10K_100K': 0,
+ 'total_CP_SIZE_WRITE_10M_100M': 0,
+ 'total_CP_SIZE_WRITE_1G_PLUS': 0,
+ 'total_CP_SIZE_WRITE_1K_10K': 24499,
+ 'total_CP_SIZE_WRITE_1M_4M': 0,
+ 'total_CP_SIZE_WRITE_4M_10M': 0,
+ 'total_bytes': 3435365750,
+ 'uid': 60674}
+
+
+
+
+
+  var mock_json = { 'agg_perf_by_cumul': 2836.215891,
+        'agg_perf_by_open': 2300.994463 }
+  console.log(mock_json[0])
+
+  function make_arc() {  
+    var svgWidth = 355;
+    var svgHeight = 355;
+
+    //var bright-red = "#C95E84"
+    //var data = [[0,60,"#AA8888"], [60,75,"#88BB88"], [80,100,"#8888CC"]];
+    var data = [[0,60,"#C95E84"], [60,100,"#88BB88"]]; // [80,100,"#8888CC"]];
+    var piScale = d3.scale.linear().domain([0, 100]).range([0,2 * Math.PI]);
+    //- See more at: http://schoolofdata.org/2013/10/01/pie-and-donut-charts-in-d3-js/#sthash.FV4QurQz.dpuf
+    //to center the circle in the svg we need a string variable.
+    //now it is hard-coded as 177
+    var sW_half = svgWidth / 2;
+    var sH_half = svgHeight / 2;
+
+    var svgContainer = d3.select("body").append("svg")
+      .attr({ width: svgWidth, height: svgHeight });
+
+  var color = d3.scale.category10();
+  var color1 = ["#C95E84", "#88BB88", "#8888CC"];
+  //var vis = d3.select("#svg_donut");
+  var arc = d3.svg.arc()
+  .innerRadius(50)
+  .outerRadius(80)
+  .startAngle( function(d)  { return piScale(d[0]); } )
+  .endAngle( function(d)  { return piScale(d[1]); } ); 
+  //full rotation is from  from 0 to 2 π
+
+  svgContainer.selectAll("path")
+  .data(data)
+  .enter()
+  .append("path")
+  .attr("d", arc)
+  .style("fill", function(d) { return color(d); })
+  .attr("transform", "translate(177, 177)"); 
+  }
+ window.onload = make_arc;
+
+  </script>
+  <style>
+     
+     svg {
+        border-style: solid;
+        border-color: blue;
+      }
+  </style>
+  
+</head>
+
+<body>
+  <h1> Donut and Pie Ex </h1>
+
+  
+
+</body>
+</html>
+
