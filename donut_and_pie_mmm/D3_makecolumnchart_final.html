@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title> Make Column Chart Final </title>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <style>
+     svg {
+        border-style: solid;
+        border-color: blue;
+        border-style: none;
+      }
+      .chart rect {
+    fill: #8888CC;
+  }
+
+  .chart text {
+    fill: white;
+    font: 10px sans-serif;
+    text-anchor: end;
+  }
+  </style>
+  <script type="text/javascript">
+function make_bar() {
+
+
+  var data = [ 10, 20, 15, 50, 70, 25, 300, 3, 33, 102 ]
+  var color = d3.scale.category20c();
+
+  var width = 460,
+    height = 500;
+
+var y = d3.scale.linear()
+    .range([height, 0])
+    .domain([0, d3.max(data)]);
+
+var chart = d3.select(".chart")
+    .attr("width", width)
+    .attr("height", height);
+
+  var barWidth = width / data.length;
+
+  var bar = chart.selectAll("g")
+      .data(data)
+      .enter().append("g")
+      .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; });
+
+  bar.append("rect")
+      .attr("y", function(d) { return y(d); })
+      .attr("height", function(d) { return height - y(d); })
+      .attr("width", barWidth - 1)
+      .style("fill", function(d) { return color(d); });
+
+  bar.append("text")
+      .attr("x", barWidth / 2)
+      .attr("y", function(d) { return y(d) + 3; })
+      .attr("dy", ".75em")
+      .text(function(d) { return d; });
+}
+
+ window.onload = make_bar;
+
+
+</script>
+  <style>
+     
+     svg {
+        border-style: solid;
+        border-color: blue;
+        border-width: 1px;
+      }
+      .chart rect {
+  fill: steelblue;
+}
+
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+  </style>
+</head>
+
+<body>
+  <h1>Make Column Chart Final</h1>
+  <svg class="chart"></svg>
+  
+
+</body>
+</html>  

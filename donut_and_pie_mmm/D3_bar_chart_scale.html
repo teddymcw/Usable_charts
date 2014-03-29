@@ -9,6 +9,7 @@
      svg {
         border-style: solid;
         border-color: blue;
+        border-style: none;
       }
       .chart rect {
 	  fill: #8888CC;
@@ -25,12 +26,24 @@ function make_bar() {
 var data = [2671449, 5632, 0, 1158, 0, 0, 0, 24499, 0, 0];
 //[4, 8, 15, 16, 23, 42, 55, 88, 12, 3, 1];
 
+max = d3.max(data);
+
+//scale down max in array
+
+
+for (var i=0; i<data.length; i++) { 
+  if (max <= data[i] * 100) 
+    data[i] = Math.ceil(((data[i] /= 100) * 1) / 1); 
+}
+var color = d3.scale.category20c();
+
 var width = 420,
     barHeight = 20;
 
+
 var x = d3.scale.linear()
     .domain([d3.min(data), d3.max(data)])
-    .range([0, width]);
+    .range([10, width]);
 
 var chart = d3.select(".chart")
     .attr("width", width)
@@ -39,11 +52,13 @@ var chart = d3.select(".chart")
 var bar = chart.selectAll("g")
     .data(data)
     .enter().append("g")
-    .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
+    .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; })
+
 
 bar.append("rect")
     .attr("width", x)
-    .attr("height", barHeight - 1);
+    .attr("height", barHeight - 1)
+    .style("fill", function(d) { return color(d); });
 
 bar.append("text")
     .attr("x", function(d) { return x(d) - 3; })
