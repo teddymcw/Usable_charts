@@ -7,7 +7,7 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <style>
      svg {
-        border-style: solid;
+        border-style: none;
         border-color: blue;
         
       }
@@ -23,16 +23,45 @@
   </style>
   <script type="text/javascript">
 function polyline() {
-	data = [14, 68, 24500, 430, 19, 1000, 5555]
+	var data = [2671449, 5632, 0, 1158, 0, 0, 0, 24499, 0, 0];
 
-	svgWidth = 300;
-	svgHeight = 300;
+	//in case zero isn't needed
+	function notZero(iterator) { return iterator !== 0; }
+	var filtered = data.filter(notZero);
+	//[14, 68, 24500, 430, 19, 1000, 5555];
 
 
-	maxd = d3.max(data);
 
-	var yScale = d3.scale.linear().domain([0,maxd]).range([0, svgHeight]); 
+	var svgWidth = 300;
+	var svgHeight = 300;
+
+
+	var maxd = d3.max(data);
+	var mind = d3.min(data);
+	var copy_data = data.slice();
+	var descending_data = copy_data.sort(d3.descending)
+	var second_max_d = descending_data[1];
+
+	//calculate best linear parameters
+	var dif_max_min = maxd - mind;
+	var one_third_d = Math.ceil((dif_max_min * .33) * 1) / 1;
+	var two_thirds_d = Math.ceil((dif_max_min * .66) * 1) / 1;
+
+	var segments = dif_max_min / data.length;
+	var bar_width = svgWidth / data.length;
+	var graph_top_padding = Math.ceil((svgHeight * .01) * 1) / 1;
+
+
+	var yScale = d3.scale.linear()
+	.domain([0, descending_data[2], second_max_d, maxd])
+	.range([1, svgHeight - graph_top_padding])
+	.clamp(true); 
+
+	var color = d3.scale.linear()
+				.domain([mind, maxd])
+				.range(["#ffff00", "#00ffff"]);
  
+ 	//Create
 	var svgContainer = d3.select("body").append("svg").attr({
 		width: svgWidth,
 		height: svgHeight
@@ -42,12 +71,12 @@ function polyline() {
 	.data(data) 
 	.enter() 
 	.append("rect") 
-	.attr("width", 10) 
+	.attr("width", bar_width) 
 	.attr("height", function(d) {return yScale(d)}) 
-	.style("fill", "blue") 
+	.style("fill", function(d) { return color(d); }) 
 	.style("stroke", "red") 
 	.style("stroke-width", "1px").style("opacity", .25)
-	.attr("x", function(d,i) {return i * 10})
+	.attr("x", function(d,i) {return i * bar_width})
 	.attr("y", function(d) {return svgHeight - yScale(d)}); 
 
 	}
