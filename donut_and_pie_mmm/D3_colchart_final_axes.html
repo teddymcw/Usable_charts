@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title> MCC Final-Axes </title>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <style>
+     svg {
+        border-style: solid;
+        border-color: blue;
+        border-style: none;
+      }
+      .chart rect {
+    fill: #8888CC;
+  }
+
+  .chart text {
+    fill: white;
+    font: 10px sans-serif;
+    text-anchor: end;
+  }
+
+  .axis text {
+    font: 10px sans-serif;
+  }
+
+  .axis path,
+  .axis line {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+  }
+  .x.axis path {
+  display: none;
+}
+  </style>
+  <script type="text/javascript">
+function make_bar() {
+
+
+  var data = [ 10, 20, 15, 50, 70, 25, 300, 3, 33, 102 ]
+  var color = d3.scale.linear().domain([d3.min(data), d3.max(data)]).range(["#0000ff", "#ff0000"]);
+
+  var margin = {top: 20, right: 30, bottom: 30, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+
+  var x = d3.scale.ordinal()
+  			.rangeRoundBands([0, width], .1)
+  			.domain(data.map(function(d) { return d; }));
+
+  var y = d3.scale.linear()
+			.domain([0, d3.max(data)])
+    		.range([height, 0]);
+
+  var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+  var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10, "%");
+
+  var chart = d3.select(".chart")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  chart.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+
+  chart.append("g")
+    .attr("class", "y axis")
+    .call(yAxis);
+
+  chart.selectAll(".bar")
+      .data(data)
+      .enter()
+      .append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d); })
+      .attr("y", function(d) { return y(d); })
+      .attr("height", function(d) { return height - y(d); })
+      .attr("width", x.rangeBand())
+      ;
+
+var svg = d3.select("svg");
+
+  svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis)
+  .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text("Frequency");
+
+
+}
+
+ window.onload = make_bar;
+
+
+</script>
+  <style>
+     
+     svg {
+        border-style: solid;
+        border-color: blue;
+        border-width: 1px;
+      }
+      .chart rect {
+ 		 fill: steelblue;
+		}
+
+	.chart text {
+	  fill: white;
+	  font: 10px sans-serif;
+	  text-anchor: middle;
+	}
+  </style>
+</head>
+
+<body>
+  <h1>MCC Final-Axes</h1>
+  <svg class="chart"></svg>
+  
+
+</body>
+</html>  

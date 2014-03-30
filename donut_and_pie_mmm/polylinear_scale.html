@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title> Polylinear Scale </title>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <style>
+     svg {
+        border-style: solid;
+        border-color: blue;
+        
+      }
+      .chart rect {
+	  fill: #8888CC;
+	}
+
+	.chart text {
+	  fill: white;
+	  font: 10px sans-serif;
+	  text-anchor: end;
+	}
+  </style>
+  <script type="text/javascript">
+function polyline() {
+	data = [14, 68, 24500, 430, 19, 1000, 5555]
+
+	svgWidth = 300;
+	svgHeight = 300;
+
+
+	maxd = d3.max(data);
+
+	var yScale = d3.scale.linear().domain([0,maxd]).range([0, svgHeight]); 
+ 
+	var svgContainer = d3.select("body").append("svg").attr({
+		width: svgWidth,
+		height: svgHeight
+	});
+
+	svgContainer.selectAll("rect") 
+	.data(data) 
+	.enter() 
+	.append("rect") 
+	.attr("width", 10) 
+	.attr("height", function(d) {return yScale(d)}) 
+	.style("fill", "blue") 
+	.style("stroke", "red") 
+	.style("stroke-width", "1px").style("opacity", .25)
+	.attr("x", function(d,i) {return i * 10})
+	.attr("y", function(d) {return svgHeight - yScale(d)}); 
+
+	}
+ 
+window.onload = polyline;
+
+  </script>
+
+</head>
+
+<body>
+  <h1>Polylinear Scale</h1>
+
+
+
+  
+
+</body>
+</html>
+
