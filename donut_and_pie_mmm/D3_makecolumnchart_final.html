@@ -32,8 +32,8 @@ function make_bar() {
     height = 500;
 
 var y = d3.scale.linear()
-    .range([height, 0])
-    .domain([0, d3.max(data)]);
+    .domain([0, d3.max(data)])
+    .range([height, 0]);
 
 var chart = d3.select(".chart")
     .attr("width", width)
@@ -44,7 +44,7 @@ var chart = d3.select(".chart")
   var bar = chart.selectAll("g")
       .data(data)
       .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; });
+      .attr("transform", function(d, i) { return "translate(" + i * barWidth + ", 0)"; });
 
   bar.append("rect")
       .attr("y", function(d) { return y(d); })

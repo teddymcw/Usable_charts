@@ -18,11 +18,11 @@ function make_bar() {
  'total_CP_SIZE_WRITE_1M_4M': 0,
  'total_CP_SIZE_WRITE_4M_10M': 0};
   
-  ez_write_labels = []
+  var ez_write_labels = []
   $.each(w, function(key, value) { ez_write_labels.push(key); });
   //note can call d3.keys and d3.values
 
-  ez_write_values = []
+  var ez_write_values = []
   $.each(w, function(key, value) { ez_write_values.push(value); });
 
   //meh, fuck the method of creating a new array including labels and values,

@@ -87,7 +87,12 @@ function polyline() {
 	.style("stroke", "red") 
 	.style("stroke-width", "1px").style("opacity", .25)
 	.attr("x", function(d,i) {return i * bar_width})
-	.attr("y", function(d) {return svgHeight - yScale(d)}); 
+	.attr("y", function(d) {return svgHeight - yScale(d)})
+	.on("click", function(d,i) {
+    console.log(d);
+    
+    d3.select(this).style("fill", "red");
+  }); 
 
 	}
  
